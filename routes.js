@@ -1,5 +1,5 @@
 //import express.js and db-operations for fetchNearestCops
-const express = requre('express');
+const express = require('express');
 const router = express.Router();
 const dbOperations = require('./db/db-operations');
 
@@ -17,3 +17,5 @@ router.get('/cops', async(req, res) => {
        cops: nearestCops
    });
 });
+
+module.exports = router;
