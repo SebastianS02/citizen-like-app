@@ -18,9 +18,14 @@ app.use(bodyParser.json({
     limit: '5mb'
 }));
 
+//Tells the app to look for HTML files in the 'views' folder
 app.set('views', 'views');
+
+//Sets folder from which static assets (stylesheets and JavaScripts) will be served
+//when a page loads on the browser
 app.use(express.static('./public'));
 
+//These two lines tell the app to use the handlebars template engine to parse HTML files
 app.set('view engine', 'html');
 app.engine('html', consolidate.handlebars);
 
