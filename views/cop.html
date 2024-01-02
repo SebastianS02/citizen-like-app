@@ -15,6 +15,29 @@
             <!-- Load map here -->
         </div>
 
+        <!-- Load socket.io client library -->
+        <script src="/socket.io/socket.io.js"></script>
+
+        <!-- Load Axios from a CDN -->
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+        <!-- Load libraries before your JS code. Write rest of your JS code here -->
+        <script type="text/javascript">
+            const socket = io();
+
+            //Fetch userId from the data-attribute of the body tag
+            const userId = document.body.getAttribute("data-userId");
+
+            //Fire a 'join' event and send your userId to the server
+            //To join a room - room-name will be in the userId itself
+            socket.emit("join", {userId: userId});
+
+            //Declare variables, this will be used later
+            let requestDetails = {};
+            let copDetails = {};
+            let map, marker;
+        </script>
+
         <!-- Load JavaScripts -->
     </body>
 </html>
