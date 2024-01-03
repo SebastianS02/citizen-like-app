@@ -4,6 +4,7 @@ const express = require('express');
 const consolidate = require('consolidate');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const socketEvents = require('./socket-events'); 
 
 const routes = require('./routes'); //import routes.js, file that contains endpoints
 
@@ -45,5 +46,6 @@ const server = http.Server(app);
 const portNumber = 8000;
 
 server.listen(portNumber, () => {
+    socketEvents.initialize(server);
     console.log(`Server listening at port ${portNumber}`);
 });
