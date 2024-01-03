@@ -20,4 +20,20 @@ function fetchNearestCops(coordinates, maxDistance) {
     .catch(error => { console.log(error) });
 }
 
+function fetchCopDetails(userId){
+    return Cop.findOne({
+        userId: userId
+    }, {
+        copId: 1,
+        displayName: 1,
+        phone: 1,
+        location: 1
+    })
+    .exec()
+    .catch(error => {
+        console.log(error);
+    });
+}
+
 exports.fetchNearestCops = fetchNearestCops;
+exports.fetchCopDetails = fetchCopDetails;
