@@ -30,7 +30,7 @@ router.get('/cop.html', (req, res) => {
     });
 });
 
-router.get('/cops/info', (req, res) => { //Endpoint calls a function to fetch a cops profile info
+router.get('/cops/info', async (req, res) => { //Endpoint calls a function to fetch a cops profile info
     const userId = req.query.userId; //Extract userId from query params
     const copDetails = await dbOperations.fetchCopDetails(userId);
 
