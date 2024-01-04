@@ -24,4 +24,19 @@ copSchema.index({"location": "2dsphere", userId: 1});
 */
 //Creates cop model based on schema, then exports it
 const Cop = mongoose.model('Cop', copSchema);
+
+const requestSchema = mongoose.Schema({
+    requestTime: {type: Date},
+    location: {
+        coordinates: [Number],
+        address: {type: String}
+    },
+    civilianId: {type: String},
+    copId: {type: String},
+    status: {type: String}
+});
+
+const Request = mongoose.model('Request', requestSchema);
+
+exports.Request = Request;
 exports.Cop = Cop;
