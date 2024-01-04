@@ -15,6 +15,8 @@
             <!-- Load map here -->
         </div>
 
+        <button onclick="requestForHelp()">Request For Help</button>
+
         <!-- Load socket.io client library -->
         <script src="/socket.io/socket.io.js"></script>
 
@@ -36,6 +38,19 @@
             let requestDetails = {};
             let copDetails = {};
             let map, marker;
+
+            requestDetails = {
+                civilianId: userId,
+                location: {
+                    address: "New Dorp, Staten Island, New York, United States",
+                    latitude: 40.569408,
+                    longitude: -74.107689
+                }
+            }
+
+            function requestForHelp(){
+                socket.emit("request-for-help", requestDetails);
+            }
         </script>
 
         <!-- Load JavaScripts -->
