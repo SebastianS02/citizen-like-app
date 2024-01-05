@@ -12,7 +12,40 @@ function initialize(server){
             socket.join(data.userId); //User joins a unique room/channel named after userId
             console.log(`User joined room: ${data.userId}`);
         });
-    })
+
+        //Listen to a 'request-for-help' event from connected civilians
+        socket.on('request-for-help', async(eventData) => {
+            /*
+                eventData contains userId and location
+                1. First save the request details in the collection requestsData
+                2. After saving, fetch nearby cops from civilians location
+                3. Fire a request-for-help event to each of the cop's rooms
+            */
+
+            //Step 1
+            const requestTime = new Date(); //Time of the request
+            const requestId = mongoose.Types.ObjectId(); //Generate unique Id for the request
+
+            const location = { //Convert latitude and longitude to [longitude, latitude]
+                coordinates: [ //MongoDB coordinate format is [long, lat]
+                    eventData.location.longitude,
+                    eventData.location.latitude
+                ],
+                address: eventData.location.address
+            };
+
+            await dbOperations.saveRequest(requestId, requestTime, location, eventData.civilianId, 'waiting');
+
+            //Step 2
+            const nearestCops = await dbOperations.fetchNearestCops(location.coordinates, 2000);
+            eventData.requestId = requestId;
+
+            //Step 3
+            for(let i = 0; i < nearestCops.length; i++){
+                io.sockets.in(nearestCops[i].userId).emit('request-for-help', eventData);
+            }
+        });
+    });
 }
 
 exports.initialize = initialize;
