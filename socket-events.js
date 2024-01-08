@@ -45,6 +45,18 @@ function initialize(server){
                 io.sockets.in(nearestCops[i].userId).emit('request-for-help', eventData);
             }
         });
+
+        socket.on('request-accepted', async (eventData) => { //Listen to a 'request-accepted' event from connected cops
+            console.log('eventData contains', eventData);
+            //Convert string to MongoDB's ObjectId data type
+            const requestId = mongoose.Types.ObjectId(eventData.requestDetails.requestId);
+
+            //Then update the request in the database with the cops details for given requestId
+            await dbOperations.updateRequest(requestId, eventData.copDetails.copId, 'engaged');
+
+            //After updating the request, emit a 'request-accepted' event to the civilian and send cop details
+            io.sockets.in(eventData.requestDetails.civilianId).emit('request-accepted', eventData.copDetails);
+        });
     });
 }
 
