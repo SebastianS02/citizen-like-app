@@ -51,6 +51,18 @@ function saveRequest(requestId, requestTime, civilianId, location, status){
         });
 }
 
-exports.saveRequest = saveRequest;
+function updateRequest(issueId, copId, status){
+    return Request.findOneAndUpdate({
+        "_id": issueId
+    }, {
+        status: status,
+        copId: copId
+    }).catch(error => {
+        console.log(error);
+    });
+}
+
 exports.fetchNearestCops = fetchNearestCops;
 exports.fetchCopDetails = fetchCopDetails;
+exports.saveRequest = saveRequest;
+exports.updateRequest = updateRequest;
